@@ -1,4 +1,29 @@
-<router-outlet></router-outlet>
+<!-- app.component.html -->
 <div class="center">
-  <button (click)="selectRandomPlayer()">Start</button>
+  <button *ngIf="showButton" (click)="selectRandomPlayer()">Start</button>
+  <div *ngIf="!showButton" class="search-container">
+    <input 
+      type="text" 
+      class="search-box" 
+      placeholder="Guess the player..."
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()">
+    <div class="dropdown-list" *ngIf="filteredPlayers.length > 0">
+      <div class="dropdown-item" 
+           *ngFor="let player of filteredPlayers"
+           (click)="comparePlayer(player)">
+        {{ player.firstName }} {{ player.lastName }}
+      </div>
+    </div>
+    <div class="comparison-results-list">
+      <div class="comparison-results" *ngFor="let comparison of comparisonResultsList">
+        <h4>{{ comparison.player.firstName }} {{ comparison.player.lastName }}</h4>
+        <div [class.correct]="comparison.results.nationality">Nationality: {{ comparison.player.nationality }}</div>
+        <div [class.correct]="comparison.results.team">Team: {{ comparison.player.team }}</div>
+        <div [class.correct]="comparison.results.position">Position: {{ comparison.player.position }}</div>
+        <div [class.correct]="comparison.results.age">Age: {{ comparison.player.age }}</div>
+        <div [class.correct]="comparison.results.number">Number: {{ comparison.player.number }}</div>
+      </div>
+    </div>
+  </div>
 </div>
