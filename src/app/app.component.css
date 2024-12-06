@@ -1,0 +1,10 @@
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 使 div 占满整个视口高度 */
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
