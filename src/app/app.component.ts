@@ -5,16 +5,17 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {AsyncPipe} from '@angular/common';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms'
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { AsyncPipe } from '@angular/common';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { PlayerDialogComponent } from './player-dialog/player-dialog.component';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import "../../node_modules/flag-icons/css/flag-icons.min.css";
 
 
 interface Player {
@@ -67,7 +68,7 @@ export class AppComponent implements OnInit {
   filteredPlayers!: Observable<Player[]>;
   comparisonResultsLength = 0;
   tentative = 1;
-  totalGuesses = 8;
+  totalGuesses = 4;
   displayedColumns: string[] = ['tentative', 'player', 'nationality', 'team', 'position', 'age', 'number'];
   dataSource: MatTableDataSource<any>;
 
@@ -76,7 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get<{players: Player[]}>('assets/players/players.json').subscribe(data => {
+    this.http.get<{players: Player[]}>('assets/players/cleaned_data.json').subscribe(data => {
       this.players = data.players;
     });
 
@@ -132,12 +133,13 @@ export class AppComponent implements OnInit {
     this.comparisonResultsList.push(comparison);
     this.dataSource.data = [...this.comparisonResultsList];
 
+    console.log('Comparison results:', this.comparisonResultsList);
+
     if (comparison.results.nationality && comparison.results.team && comparison.results.position && comparison.results.age && comparison.results.number) {
       this.openDialog('Congratulations!', 'You guessed the player correctly!', guessedPlayer);
     } else if (this.tentative >= this.totalGuesses) {
       this.openDialog('Game Over', 'You have used all your guesses. The correct player was:', this.selectedPlayer);
     }
-    console.log('Comparison results:', this.comparisonResultsList);
     this.cdr.detectChanges();
   }
 
@@ -156,11 +158,14 @@ export class AppComponent implements OnInit {
   }
 
   resetGame() {
+    console.log('Resetting game...');
     this.tentative = 0;
     this.showButton = true;
+    this.showResults = false;
     this.selectedPlayer = null;
     this.comparisonResultsList = [];
     this.searchBarControl.reset();
+    console.log('comparisonResultsList:', this.comparisonResultsList);
   }
 
   trackByFn(index: number, item: any): any {

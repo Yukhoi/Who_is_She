@@ -1,14 +1,29 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>
   <p>{{ data.message }}</p>
-  <p>First Name: {{ data.player.firstName }}</p>
-  <p>Last Name: {{ data.player.lastName }}</p>
-  <p>Nationality: {{ data.player.nationality }}</p>
-  <p>Team: {{ data.player.team }}</p>
-  <p>Position: {{ data.player.position }}</p>
-  <p>Age: {{ data.player.age }}</p>
-  <p>Number: {{ data.player.number }}</p>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+    <ng-container matColumnDef="property">
+      <th mat-header-cell *matHeaderCellDef>Property</th>
+      <td mat-cell *matCellDef="let element">{{element.property}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef>Value</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container [ngSwitch]="element.property">
+          <span *ngSwitchCase="'Nationality'" class="fi fi-{{element.value.toLowerCase()}}"></span>
+          <img *ngSwitchCase="'Team'" [src]="'assets/teams/' + element.value + '.png'" class="team-logo" [alt]="element.value">
+          <span *ngSwitchDefault>{{element.value}}</span>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button color="warn" mat-dialog-close>Close</button>
 </div>

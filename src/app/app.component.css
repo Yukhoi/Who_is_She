@@ -41,6 +41,30 @@ button:hover {
   border-color: #007bff;
 }
 
+.mat-elevation-z8 {
+  background-color: #b4b3b3;
+}
+
+.mat-mdc-row {
+  background-color: #8f8f8f;
+}
+
 .correct-tile {
   background-color: green; /* 绿色 */
+}
+
+
+.fi {
+  font-size: 3em;
+  width: 48px;
+  height: 36px;
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.team-logo{font-size: 3em;
+  width: 48px;
+  height: 48px;
+  margin-right: 15px;
+  display: inline-block;
 }

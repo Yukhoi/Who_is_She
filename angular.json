@@ -28,7 +28,13 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "loader": {
+              ".pdf": "binary",
+              ".jpg": "file",
+              ".txt": "text",
+              ".svg": "text"
+            }
           },
           "configurations": {
             "production": {

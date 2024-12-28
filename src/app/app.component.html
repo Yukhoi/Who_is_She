@@ -41,14 +41,14 @@
         <ng-container matColumnDef="nationality">
           <th mat-header-cell *matHeaderCellDef> Nationality </th>
           <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.nationality}">
-        {{ comparison.player.nationality }}
+            <span class="fi fi-{{comparison.player.nationality}}"></span>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef> Team </th>
           <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.team}">
-        {{ comparison.player.team }}
+            <img [src]="'assets/teams/' + comparison.player.team + '.png'" alt="{{ comparison.player.team }}" class="team-logo">        
           </td>
         </ng-container>
 
@@ -63,8 +63,8 @@
           <th mat-header-cell *matHeaderCellDef> Age </th>
           <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.age}">
         {{ comparison.player.age }}
-        <span *ngIf="comparison.results.biggerAge">↑</span>
-        <span *ngIf="comparison.results.smallerAge">↓</span>
+        <span *ngIf="comparison.results.smallerAge">↑</span>
+        <span *ngIf="comparison.results.biggerAge">↓</span>
           </td>
         </ng-container>
 
@@ -72,8 +72,8 @@
           <th mat-header-cell *matHeaderCellDef> Number </th>
           <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.number}">
         {{ comparison.player.number }}
-        <span *ngIf="comparison.results.biggerNumber">↑</span>
-        <span *ngIf="comparison.results.smallerNumber">↓</span>
+        <span *ngIf="comparison.results.smallerNumber">↑</span>
+        <span *ngIf="comparison.results.biggerNumber">↓</span>
           </td>
         </ng-container>
 
