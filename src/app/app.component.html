@@ -1,29 +1,85 @@
 <!-- app.component.html -->
 <div class="center">
-  <button *ngIf="showButton" (click)="selectRandomPlayer()">Start</button>
+
+  <button *ngIf="showButton" (click)="selectRandomPlayer()" mat-fab extended>
+    Start
+  </button>
+
   <div *ngIf="!showButton" class="search-container">
-    <input 
-      type="text" 
-      class="search-box" 
-      placeholder="Guess the player..."
-      [(ngModel)]="searchQuery"
-      (input)="onSearch()">
-    <div class="dropdown-list" *ngIf="filteredPlayers.length > 0">
-      <div class="dropdown-item" 
-           *ngFor="let player of filteredPlayers"
-           (click)="comparePlayer(player)">
-        {{ player.firstName }} {{ player.lastName }}
-      </div>
-    </div>
-    <div class="comparison-results-list">
-      <div class="comparison-results" *ngFor="let comparison of comparisonResultsList">
-        <h4>{{ comparison.player.firstName }} {{ comparison.player.lastName }}</h4>
-        <div [class.correct]="comparison.results.nationality">Nationality: {{ comparison.player.nationality }}</div>
-        <div [class.correct]="comparison.results.team">Team: {{ comparison.player.team }}</div>
-        <div [class.correct]="comparison.results.position">Position: {{ comparison.player.position }}</div>
-        <div [class.correct]="comparison.results.age">Age: {{ comparison.player.age }}</div>
-        <div [class.correct]="comparison.results.number">Number: {{ comparison.player.number }}</div>
-      </div>
+    <mat-form-field class="search-box">
+      <mat-label>Guess the player</mat-label>
+      <input matInput 
+        [placeholder] ="'GUESS ' + tentative + ' OF 8'" 
+        [formControl]="searchBarControl"
+        [matAutocomplete]="auto"
+        >
+    </mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete">
+      @for (player of filteredPlayers | async; track player) {
+        <mat-option  (click)="comparePlayer(player)">
+          {{ player.firstName }} {{ player.lastName }}
+        </mat-option>
+      }
+    </mat-autocomplete>
+
+    <div *ngIf="showResults" class="comparison-results-list">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="tentative">
+          <th mat-header-cell *matHeaderCellDef> Tentative </th>
+          <td mat-cell *matCellDef="let comparison">
+        {{ comparison.id }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="player">
+          <th mat-header-cell *matHeaderCellDef> Player </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.correct}">
+        {{ comparison.player.firstName }} {{ comparison.player.lastName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="nationality">
+          <th mat-header-cell *matHeaderCellDef> Nationality </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.nationality}">
+        {{ comparison.player.nationality }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="team">
+          <th mat-header-cell *matHeaderCellDef> Team </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.team}">
+        {{ comparison.player.team }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> Position </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.position}">
+        {{ comparison.player.position }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef> Age </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.age}">
+        {{ comparison.player.age }}
+        <span *ngIf="comparison.results.biggerAge">↑</span>
+        <span *ngIf="comparison.results.smallerAge">↓</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="number">
+          <th mat-header-cell *matHeaderCellDef> Number </th>
+          <td mat-cell *matCellDef="let comparison" [ngClass]="{'correct-tile': comparison.results.number}">
+        {{ comparison.player.number }}
+        <span *ngIf="comparison.results.biggerNumber">↑</span>
+        <span *ngIf="comparison.results.smallerNumber">↓</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;  trackBy: trackByFn"></tr>
+      </table>
     </div>
   </div>
 </div>
