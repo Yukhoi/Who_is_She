@@ -62,7 +62,6 @@ export class AppComponent implements OnInit {
   comparisonResultsList: any[] = [];
   searchBarControl = new FormControl('');
   filteredPlayers!: Observable<Player[]>;
-  comparisonResultsLength = 0;
   tentative = 1;
   totalGuesses = 8;
   displayedColumns: string[] = [
@@ -119,15 +118,13 @@ export class AppComponent implements OnInit {
   comparePlayer(guessedPlayer: any) {
     if (!this.selectedPlayer) return;
 
-    this.comparisonResultsLength++;
-    this.tentative++;
     this.showResults = true;
 
     const comparison = {
       player: guessedPlayer,
       results: {
         nationality:
-          guessedPlayer.nationality === this.selectedPlayer.nationality,
+        guessedPlayer.nationality === this.selectedPlayer.nationality,
         team: guessedPlayer.team === this.selectedPlayer.team,
         position: guessedPlayer.position === this.selectedPlayer.position,
         age: guessedPlayer.age === this.selectedPlayer.age,
@@ -139,9 +136,9 @@ export class AppComponent implements OnInit {
         firstName: guessedPlayer.firstName === this.selectedPlayer.firstName,
         lastName: guessedPlayer.lastName === this.selectedPlayer.lastName,
       },
-      id: this.comparisonResultsLength,
+      id: this.tentative,
     };
-
+    this.tentative++;
     this.comparisonResultsList.push(comparison);
     this.dataSource.data = [...this.comparisonResultsList];
 
@@ -185,7 +182,7 @@ export class AppComponent implements OnInit {
 
   resetGame() {
     console.log('Resetting game...');
-    this.tentative = 0;
+    this.tentative = 1;
     this.showButton = true;
     this.showResults = false;
     this.selectedPlayer = null;
