@@ -1,0 +1,54 @@
+{
+  "players": [
+    {
+      "id": 1,
+      "firstName": "Megan",
+      "lastName": "Rapinoe",
+      "nationality": "USA",
+      "team": "OL Reign",
+      "position": "Forward",
+      "age": 36,
+      "number": 15
+    },
+    {
+      "id": 2,
+      "firstName": "Alex",
+      "lastName": "Morgan",
+      "nationality": "USA",
+      "team": "San Diego Wave",
+      "position": "Forward",
+      "age": 32,
+      "number": 13
+    },
+    {
+      "id": 3,
+      "firstName": "Sam",
+      "lastName": "Kerr",
+      "nationality": "Australia",
+      "team": "Chelsea",
+      "position": "Forward",
+      "age": 28,
+      "number": 20
+    },
+    {
+      "id": 4,
+      "firstName": "Lucy",
+      "lastName": "Bronze",
+      "nationality": "England",
+      "team": "Manchester City",
+      "position": "Defender",
+      "age": 29,
+      "number": 2
+    },
+    {
+      "id": 5,
+      "firstName": "Vivianne",
+      "lastName": "Miedema",
+      "nationality": "Netherlands",
+      "team": "Arsenal",
+      "position": "Forward",
+      "age": 25,
+      "number": 11
+    }
+  ]
+}
