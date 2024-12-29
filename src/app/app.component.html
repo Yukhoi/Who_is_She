@@ -1,9 +1,12 @@
 <!-- app.component.html -->
 <div class="center">
 
-  <button *ngIf="showButton" (click)="selectRandomPlayer()" mat-fab extended>
-    Start
-  </button>
+  <app-start-button 
+    *ngIf="showButton"
+    (playersChange)="onPlayersChange($event)"
+    (selectedPlayerChange)="onSelectedPlayerChange($event)"
+    (showButtonChange)="onShowButtonChange($event)">
+  </app-start-button>
 
   <div *ngIf="!showButton" class="search-container">
     <mat-form-field class="search-box">
@@ -16,8 +19,16 @@
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
       @for (player of filteredPlayers | async; track player) {
-        <mat-option  (click)="comparePlayer(player)">
-          {{ player.firstName }} {{ player.lastName }}
+        <mat-option (click)="comparePlayer(player)" class="player-option">
+          <div class="player-info">
+            <span class="name">{{ player.firstName }} {{ player.lastName }}   </span>
+            <span class="details">
+              <span class="team">
+                <img [src]="'assets/teams/' + player.team + '.png'" alt="{{ player.team }}" class="team-logo">
+              </span>
+              <span class="position">{{ player.position }}</span>
+            </span>
+          </div>
         </mat-option>
       }
     </mat-autocomplete>

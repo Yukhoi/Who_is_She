@@ -6,19 +6,6 @@
   background-color: #87CEEB; /* Sky blue color */
 }
 
-button {
-  padding: 20px 40px;
-  font-size: 24px;
-  min-width: 200px;
-  min-height: 60px;
-  border-radius: 30px;
-  transition: transform 0.2s;
-}
-
-button:hover {
-  transform: scale(1.1);
-}
-
 .search-container {
   display: flex;
   flex-direction: column;
@@ -67,4 +54,40 @@ button:hover {
   height: 48px;
   margin-right: 15px;
   display: inline-block;
+}
+
+.player-option {
+  padding: 8px 16px;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.name {
+  flex: 1;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.fi {
+  font-size: 1.2em;
+}
+
+.position {
+  min-width: 60px;
+  text-align: right;
 }

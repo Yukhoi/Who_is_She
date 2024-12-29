@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  margin-bottom: 40px;
+  width: 600px;
+}
+
+button {
+  font-size: 24px;
+  min-width: 200px;
+  min-height: 60px;
+  border-radius: 30px;
+  transition: transform 0.2s;
+  background-color: rgb(226, 43, 144);
+  color: white;
+  outline: none;
+  border: 2px solid rgb(226, 43, 144);
+}
+
+button:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}

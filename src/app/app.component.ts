@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,24 +15,14 @@ import { PlayerDialogComponent } from './player-dialog/player-dialog.component';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import '../../node_modules/flag-icons/css/flag-icons.min.css';
-
-interface Player {
-  id: number;
-  firstName: string;
-  lastName: string;
-  nationality: string;
-  team: string;
-  position: string;
-  age: number;
-  number: number;
-}
+import { Player } from './core/interfaces/player.interface';
+import { StartButtonComponent } from './start-button/start-button.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-    HttpClientModule,
     RouterModule,
     FormsModule,
     CommonModule,
@@ -47,6 +36,7 @@ interface Player {
     ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
+    StartButtonComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -76,7 +66,6 @@ export class AppComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
 
   constructor(
-    private http: HttpClient,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef
   ) {
@@ -84,25 +73,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http
-      .get<{ players: Player[] }>('assets/players/cleaned_data.json')
-      .subscribe((data) => {
-        this.players = data.players;
-      });
-
     this.filteredPlayers = this.searchBarControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || ' '))
     );
-  }
-
-  selectRandomPlayer() {
-    if (this.players.length > 0) {
-      const randomIndex = Math.floor(Math.random() * this.players.length);
-      this.selectedPlayer = this.players[randomIndex];
-      console.log('Selected player:', this.selectedPlayer);
-      this.showButton = false;
-    }
   }
 
   private _filter(value: string): Player[] {
@@ -119,7 +93,6 @@ export class AppComponent implements OnInit {
     if (!this.selectedPlayer) return;
 
     this.showResults = true;
-
     const comparison = {
       player: guessedPlayer,
       results: {
@@ -128,11 +101,11 @@ export class AppComponent implements OnInit {
         team: guessedPlayer.team === this.selectedPlayer.team,
         position: guessedPlayer.position === this.selectedPlayer.position,
         age: guessedPlayer.age === this.selectedPlayer.age,
-        biggerAge: guessedPlayer.age > this.selectedPlayer.age,
-        smallerAge: guessedPlayer.age < this.selectedPlayer.age,
+        biggerAge: (+guessedPlayer.age) > (+this.selectedPlayer.age),
+        smallerAge: (+guessedPlayer.age) < (+this.selectedPlayer.age),
         number: guessedPlayer.number === this.selectedPlayer.number,
-        biggerNumber: guessedPlayer.number > this.selectedPlayer.number,
-        smallerNumber: guessedPlayer.number < this.selectedPlayer.number,
+        biggerNumber: (+guessedPlayer.number) > (+this.selectedPlayer.number),
+        smallerNumber: (+guessedPlayer.number) < (+this.selectedPlayer.number),
         firstName: guessedPlayer.firstName === this.selectedPlayer.firstName,
         lastName: guessedPlayer.lastName === this.selectedPlayer.lastName,
       },
@@ -141,8 +114,6 @@ export class AppComponent implements OnInit {
     this.tentative++;
     this.comparisonResultsList.push(comparison);
     this.dataSource.data = [...this.comparisonResultsList];
-
-    console.log('Comparison results:', this.comparisonResultsList);
 
     if (
       comparison.results.nationality &&
@@ -181,17 +152,27 @@ export class AppComponent implements OnInit {
   }
 
   resetGame() {
-    console.log('Resetting game...');
     this.tentative = 1;
     this.showButton = true;
     this.showResults = false;
     this.selectedPlayer = null;
     this.comparisonResultsList = [];
     this.searchBarControl.reset();
-    console.log('comparisonResultsList:', this.comparisonResultsList);
   }
 
   trackByFn(index: number, item: any): any {
     return item.id;
+  }
+
+  onPlayersChange(players: Player[]) {
+    this.players = players;
+  }
+
+  onSelectedPlayerChange(player: Player) {
+    this.selectedPlayer = player;
+  }
+
+  onShowButtonChange(showButton: boolean) {
+    this.showButton = showButton;
   }
 }
