@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient,HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,12 +11,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayerDialogComponent } from './player-dialog/player-dialog.component';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import "../../node_modules/flag-icons/css/flag-icons.min.css";
-
+import '../../node_modules/flag-icons/css/flag-icons.min.css';
 
 interface Player {
   id: number;
@@ -33,7 +32,7 @@ interface Player {
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, 
+    RouterOutlet,
     HttpClientModule,
     RouterModule,
     FormsModule,
@@ -47,14 +46,11 @@ interface Player {
     AsyncPipe,
     ReactiveFormsModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
-
-
-
 export class AppComponent implements OnInit {
   title = 'Who_is_She';
   players: Player[] = [];
@@ -68,22 +64,36 @@ export class AppComponent implements OnInit {
   filteredPlayers!: Observable<Player[]>;
   comparisonResultsLength = 0;
   tentative = 1;
-  totalGuesses = 4;
-  displayedColumns: string[] = ['tentative', 'player', 'nationality', 'team', 'position', 'age', 'number'];
+  totalGuesses = 8;
+  displayedColumns: string[] = [
+    'tentative',
+    'player',
+    'nationality',
+    'team',
+    'position',
+    'age',
+    'number',
+  ];
   dataSource: MatTableDataSource<any>;
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private cdr: ChangeDetectorRef) {
+  constructor(
+    private http: HttpClient,
+    public dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) {
     this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
-    this.http.get<{players: Player[]}>('assets/players/cleaned_data.json').subscribe(data => {
-      this.players = data.players;
-    });
+    this.http
+      .get<{ players: Player[] }>('assets/players/cleaned_data.json')
+      .subscribe((data) => {
+        this.players = data.players;
+      });
 
     this.filteredPlayers = this.searchBarControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ' ')),
+      map((value) => this._filter(value || ' '))
     );
   }
 
@@ -99,23 +109,25 @@ export class AppComponent implements OnInit {
   private _filter(value: string): Player[] {
     const filterValue = value.toLowerCase();
 
-    return this.players.filter(player => 
-      player.firstName.toLowerCase().includes(filterValue) ||
-      player.lastName.toLowerCase().includes(filterValue)
+    return this.players.filter(
+      (player) =>
+        player.firstName.toLowerCase().includes(filterValue) ||
+        player.lastName.toLowerCase().includes(filterValue)
     );
   }
 
   comparePlayer(guessedPlayer: any) {
-    if (!this.selectedPlayer) return; 
+    if (!this.selectedPlayer) return;
 
-    this.comparisonResultsLength ++;
-    this.tentative ++;
+    this.comparisonResultsLength++;
+    this.tentative++;
     this.showResults = true;
 
     const comparison = {
       player: guessedPlayer,
       results: {
-        nationality: guessedPlayer.nationality === this.selectedPlayer.nationality,
+        nationality:
+          guessedPlayer.nationality === this.selectedPlayer.nationality,
         team: guessedPlayer.team === this.selectedPlayer.team,
         position: guessedPlayer.position === this.selectedPlayer.position,
         age: guessedPlayer.age === this.selectedPlayer.age,
@@ -125,9 +137,9 @@ export class AppComponent implements OnInit {
         biggerNumber: guessedPlayer.number > this.selectedPlayer.number,
         smallerNumber: guessedPlayer.number < this.selectedPlayer.number,
         firstName: guessedPlayer.firstName === this.selectedPlayer.firstName,
-        lastName: guessedPlayer.lastName === this.selectedPlayer.lastName
+        lastName: guessedPlayer.lastName === this.selectedPlayer.lastName,
       },
-      id: this.comparisonResultsLength
+      id: this.comparisonResultsLength,
     };
 
     this.comparisonResultsList.push(comparison);
@@ -135,10 +147,24 @@ export class AppComponent implements OnInit {
 
     console.log('Comparison results:', this.comparisonResultsList);
 
-    if (comparison.results.nationality && comparison.results.team && comparison.results.position && comparison.results.age && comparison.results.number) {
-      this.openDialog('Congratulations!', 'You guessed the player correctly!', guessedPlayer);
+    if (
+      comparison.results.nationality &&
+      comparison.results.team &&
+      comparison.results.position &&
+      comparison.results.age &&
+      comparison.results.number
+    ) {
+      this.openDialog(
+        'Congratulations!',
+        'You guessed the player correctly!',
+        guessedPlayer
+      );
     } else if (this.tentative >= this.totalGuesses) {
-      this.openDialog('Game Over', 'You have used all your guesses. The correct player was:', this.selectedPlayer);
+      this.openDialog(
+        'Game Over',
+        'You have used all your guesses. The correct player was:',
+        this.selectedPlayer
+      );
     }
     this.cdr.detectChanges();
   }
@@ -148,8 +174,8 @@ export class AppComponent implements OnInit {
       data: {
         title: title,
         message: message,
-        player: player
-      }
+        player: player,
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {

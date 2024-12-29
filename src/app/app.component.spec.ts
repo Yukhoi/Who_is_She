@@ -24,6 +24,8 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Who_is_She');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, Who_is_She'
+    );
   });
 });
