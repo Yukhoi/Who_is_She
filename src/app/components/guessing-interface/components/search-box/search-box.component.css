@@ -1,0 +1,39 @@
+.search-box {
+  width: 600px;
+}
+
+.player-option {
+  padding: 8px 16px;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.name {
+  flex: 1;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.team-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.fi {
+  font-size: 1.2em;
+}
+
+.position {
+  min-width: 60px;
+  text-align: right;
+}

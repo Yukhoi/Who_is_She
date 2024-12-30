@@ -1,16 +1,15 @@
 <!-- app.component.html -->
 <div class="center">
-
-  <app-start-button 
+  <app-start-button
     *ngIf="showButton"
     (playersChange)="onPlayersChange($event)"
     (selectedPlayerChange)="onSelectedPlayerChange($event)"
-    (showButtonChange)="onShowButtonChange($event)">
+    (showButtonChange)="onShowButtonChange($event)"
+  >
   </app-start-button>
 
   <div *ngIf="!showButton" class="search-container">
-    <app-guessing-interface 
-      (showButtonChange)="onShowButtonChange($event)">
+    <app-guessing-interface (showButtonChange)="onShowButtonChange($event)">
     </app-guessing-interface>
   </div>
 </div>

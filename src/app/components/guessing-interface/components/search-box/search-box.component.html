@@ -1,0 +1,30 @@
+<mat-form-field class="search-box">
+  <mat-label>Guess the player</mat-label>
+  <input
+    matInput
+    [placeholder]="'GUESS ' + tentative + ' OF 8'"
+    [formControl]="searchBarControl"
+    [matAutocomplete]="auto"
+  />
+</mat-form-field>
+<mat-autocomplete #auto="matAutocomplete">
+  @for (player of filteredPlayers | async; track player) {
+    <mat-option (click)="onPlayerSelected(player)" class="player-option">
+      <div class="player-info">
+        <span class="name">{{ player.firstName }} {{ player.lastName }} </span>
+        <span class="details">
+          <span class="team">
+            <img
+              [src]="'assets/teams/' + player.team + '.png'"
+              alt="{{ player.team }}"
+              class="team-logo"
+            />
+          </span>
+          <span class="position">{{ player.position }}</span>
+          <span class="age">{{ player.age }}yo</span>
+          <span class="number">No.{{ player.number }}</span>
+        </span>
+      </div>
+    </mat-option>
+  }
+</mat-autocomplete>

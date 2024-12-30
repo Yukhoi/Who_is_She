@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Player } from '../../core/interfaces/player.interface';
+import { Player } from '../../../core/interfaces/player.interface';
 import { GameMode, RandomIndexMap } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class StartButtonService {
   private randomIndex: RandomIndexMap = {
-    "Easy Mode": 112,
-    "Hard Mode": 300
-  }; 
+    'Easy Mode': 112,
+    'Hard Mode': 300,
+  };
 
   constructor() {}
 

@@ -1,11 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Player } from '../core/interfaces/player.interface';
-import { GameService } from '../core/services/game.service';
+import { Player } from '../../core/interfaces/player.interface';
+import { GameService } from '../../core/services/game.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { map, startWith } from 'rxjs/operators';
 import { PlayerDialogComponent } from '../player-dialog/player-dialog.component';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -13,7 +12,8 @@ import { AsyncPipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { GuessingInterfaceService } from './services/guessing-interface.service';
 
 @Component({
   selector: 'app-guessing-interface',
@@ -27,28 +27,38 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    SearchBoxComponent,
   ],
   templateUrl: './guessing-interface.component.html',
-  styleUrl: './guessing-interface.component.css'
+  styleUrl: './guessing-interface.component.css',
 })
 export class GuessingInterfaceComponent {
   players: Player[] = [];
-  selectedPlayer : Player | null = null;
+  selectedPlayer: Player | null = null;
+  guessedPlayer: Player | null = null;
   showButton = true;
   showResults = false;
   searchBarControl = new FormControl('');
   filteredPlayers!: Observable<Player[]>;
-  tentative = 1;
+  tentative: number = 1;
   totalGuesses = 8;
   comparisonResultsList: any[] = [];
-  displayedColumns: string[] = ['player', 'nationality', 'team', 'position', 'age', 'number'];
+  displayedColumns: string[] = [
+    'player',
+    'nationality',
+    'team',
+    'position',
+    'age',
+    'number',
+  ];
   dataSource: MatTableDataSource<any>;
 
   @Output() showButtonChange = new EventEmitter<boolean>();
 
   constructor(
     private gameService: GameService,
+    private guessingInterfaceService: GuessingInterfaceService,
     private cdr: ChangeDetectorRef,
     public dialog: MatDialog,
   ) {
@@ -56,30 +66,18 @@ export class GuessingInterfaceComponent {
   }
 
   ngOnInit() {
-    this.gameService.players$.subscribe(players => {
+    this.gameService.players$.subscribe((players) => {
       this.players = players;
     });
 
-    this.gameService.selectedPlayer$.subscribe(player => {
+    this.gameService.selectedPlayer$.subscribe((player) => {
       this.selectedPlayer = player;
     });
 
-    this.gameService.showButton$.subscribe(show => {
+    this.gameService.showButton$.subscribe((show) => {
       this.showButton = show;
     });
 
-    this.filteredPlayers = this.searchBarControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || ' '))
-    );
-  }
-
-  private _filter(value: string): Player[] {
-    const filterValue = value.toLowerCase();
-    return this.players.filter(player => 
-      player.firstName.toLowerCase().includes(filterValue) ||
-      player.lastName.toLowerCase().includes(filterValue)
-    );
   }
 
   comparePlayer(guessedPlayer: any) {
@@ -90,21 +88,22 @@ export class GuessingInterfaceComponent {
       player: guessedPlayer,
       results: {
         nationality:
-        guessedPlayer.nationality === this.selectedPlayer.nationality,
+          guessedPlayer.nationality === this.selectedPlayer.nationality,
         team: guessedPlayer.team === this.selectedPlayer.team,
         position: guessedPlayer.position === this.selectedPlayer.position,
         age: guessedPlayer.age === this.selectedPlayer.age,
-        biggerAge: (+guessedPlayer.age) > (+this.selectedPlayer.age),
-        smallerAge: (+guessedPlayer.age) < (+this.selectedPlayer.age),
+        biggerAge: +guessedPlayer.age > +this.selectedPlayer.age,
+        smallerAge: +guessedPlayer.age < +this.selectedPlayer.age,
         number: guessedPlayer.number === this.selectedPlayer.number,
-        biggerNumber: (+guessedPlayer.number) > (+this.selectedPlayer.number),
-        smallerNumber: (+guessedPlayer.number) < (+this.selectedPlayer.number),
+        biggerNumber: +guessedPlayer.number > +this.selectedPlayer.number,
+        smallerNumber: +guessedPlayer.number < +this.selectedPlayer.number,
         firstName: guessedPlayer.firstName === this.selectedPlayer.firstName,
         lastName: guessedPlayer.lastName === this.selectedPlayer.lastName,
       },
       id: this.tentative,
     };
     this.tentative++;
+    this.guessingInterfaceService.setTentative(this.tentative);
     this.comparisonResultsList.push(comparison);
     this.dataSource.data = [...this.comparisonResultsList];
 
@@ -118,13 +117,13 @@ export class GuessingInterfaceComponent {
       this.openDialog(
         'Congratulations!',
         'You guessed the player correctly!',
-        guessedPlayer
+        guessedPlayer,
       );
     } else if (this.tentative >= this.totalGuesses) {
       this.openDialog(
         'Game Over',
         'You have used all your guesses. The correct player was:',
-        this.selectedPlayer
+        this.selectedPlayer,
       );
     }
     this.cdr.detectChanges();
@@ -135,8 +134,8 @@ export class GuessingInterfaceComponent {
       data: {
         title: title,
         message: message,
-        player: player
-      }
+        player: player,
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -146,10 +145,19 @@ export class GuessingInterfaceComponent {
 
   resetGame() {
     this.tentative = 1;
+    this.guessingInterfaceService.setTentative(this.tentative);
     this.showButton = true;
-    this.showButtonChange.emit(true); 
+    this.showButtonChange.emit(true);
     this.showResults = false;
     this.comparisonResultsList = [];
     this.searchBarControl.reset();
+  }
+
+  onPlayerSelected(player: Player) {
+    this.comparePlayer(player);
+  }
+
+  onShowResultsChange(show: boolean) {
+    this.showResults = show;
   }
 }
