@@ -32,7 +32,6 @@ export class AppComponent {
 
   onShowButtonChange(showButton: boolean) {
     this.showButton = showButton;
-    console.log('showButton', showButton);
     this.gameService.setShowButton(showButton);
   }
 }

@@ -16,7 +16,6 @@ export class PlayerDialogComponent {
   dataSource: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data);
     this.dataSource = [
       { property: 'First Name', value: data.player.firstName },
       { property: 'Last Name', value: data.player.lastName },

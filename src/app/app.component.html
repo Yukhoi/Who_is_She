@@ -9,7 +9,9 @@
   </app-start-button>
 
   <div *ngIf="!showButton" class="search-container">
-    <app-guessing-interface (showButtonChange)="onShowButtonChange($event)">
+    <app-guessing-interface 
+      (showButtonChange)="onShowButtonChange($event)"
+    >
     </app-guessing-interface>
   </div>
 </div>

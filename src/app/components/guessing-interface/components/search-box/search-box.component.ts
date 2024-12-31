@@ -42,7 +42,6 @@ export class SearchBoxComponent implements OnInit {
 
     this.guessingInterfaceService.tentative$.subscribe(tentative => {
       this.tentative = tentative;
-      console.log('tentative', tentative);
     });
 
     this.guessingInterfaceService.showResults$.subscribe(showResults => {
