@@ -36,6 +36,7 @@ export class ResultListComponent {
   comparisonResultsList: Comparison[] = [];
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = [
+    'tentative',
     'player',
     'nationality',
     'team',
@@ -97,7 +98,7 @@ export class ResultListComponent {
         'You guessed the player correctly!',
         guessedPlayer,
       );
-    } else if (this.tentative >= this.totalGuesses) {
+    } else if (this.tentative > this.totalGuesses) {
       this.openDialog(
         'Game Over',
         'You have used all your guesses. The correct player was:',
