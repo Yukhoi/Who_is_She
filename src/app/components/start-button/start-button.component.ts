@@ -18,6 +18,7 @@ export class StartButtonComponent {
   players: Player[] = [];
   selectedPlayer: Player | null = null;
   selectedGameMode: GameMode = 'Easy Mode';
+  selectedLeague: string = "Women's Super League";
   showButton = true;
 
   @Output() playersChange = new EventEmitter<Player[]>();

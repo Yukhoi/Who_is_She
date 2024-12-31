@@ -3,6 +3,24 @@
   <img src="assets/logos/logo.png" alt="Football Quiz Logo" class="logo">
 
   <mat-form-field>
+    <mat-label>Select a League</mat-label>
+    <mat-select [(ngModel)]="selectedLeague">
+      <mat-option value="Women's Super League">
+        <div class="league-option">
+          <span class="fi fi-gb-eng"></span>
+          <span> Women's Super League</span>
+        </div>
+      </mat-option>
+      <mat-option value="Arkema Première Ligue" disabled>
+        <div class="league-option">
+          <span class="fi fi-fr"></span>
+          <span> Arkema Première Ligue (Coming soon...)</span>
+        </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
     <mat-label>Select a Game Mode</mat-label>
     <mat-select [(ngModel)]="selectedGameMode">
       <mat-option value="Easy Mode">Easy Mode</mat-option>

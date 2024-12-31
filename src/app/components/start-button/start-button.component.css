@@ -25,3 +25,7 @@ button:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
+
+mat-form-field {
+  width: 400px;
+}
