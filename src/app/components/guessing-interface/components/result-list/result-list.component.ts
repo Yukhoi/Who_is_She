@@ -89,7 +89,6 @@ export class ResultListComponent {
     this.tentative++;
     this.tentativeChange.emit(this.tentative);
 
-    console.log('selectedPlayer', this.selectedPlayer);
     this.dataSource.data = [...this.comparisonResultsList];
 
     if (this.resultListService.isWinningGuess(comparison)) {
