@@ -56,10 +56,11 @@ export class SearchBoxComponent implements OnInit {
 
   private _filter(value: string): Player[] {
     const filterValue = value.toLowerCase();
-    return this.players.filter(player =>
-      player.firstName.toLowerCase().includes(filterValue) ||
-      player.lastName.toLowerCase().includes(filterValue)
-    );
+    return this.players.filter(player => {
+      const firstName = player.firstName ? player.firstName.toLowerCase() : '';
+      const lastName = player.lastName ? player.lastName.toLowerCase() : '';
+      return firstName.includes(filterValue) || lastName.includes(filterValue);
+    });
   }
 
   onPlayerSelected(player: Player) {
