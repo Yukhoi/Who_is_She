@@ -10,6 +10,9 @@
 - ✅ Smooth and responsive experience on both mobile and desktop  
 - ✅ Deployed on **GitHub Pages** for easy access  
 
+## 🌐 Live Demo  
+🔗 **Play Now**: [Who-is-She](https://yukhoi.github.io/Who_is_She/)  
+
 ## 🛠 Technologies Used  
 - **Frontend**: Angular  
 - **Deployment**: GitHub Pages  
