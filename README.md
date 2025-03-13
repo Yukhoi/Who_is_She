@@ -7,7 +7,7 @@
 - ✅ Guess a **women’s football player** based on progressive hints  
 - ✅ Interactive UI built with **Angular**  
 - ✅ Continuously updated database of players  
-- ✅ Smooth and responsive experience on both mobile and desktop  
+- ✅ Smooth and responsive experience  
 - ✅ Deployed on **GitHub Pages** for easy access  
 
 ## 🌐 Live Demo  
