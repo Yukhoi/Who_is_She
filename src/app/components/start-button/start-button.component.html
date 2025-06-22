@@ -1,6 +1,6 @@
 <div class="container">
-  
-  <img src="assets/logos/logo.png" alt="Football Quiz Logo" class="logo">
+  <img src="assets/logos/logo.png" alt="Football Quiz Logo" class="logo" />
+
 
   <mat-form-field>
     <mat-label>Select a League</mat-label>
@@ -18,7 +18,9 @@
         </div>
       </mat-option>
     </mat-select>
+    <mat-icon matSuffix (click)="openInfoDialog($event, 'Select League', 'Select a league to start the game')">info</mat-icon>
   </mat-form-field>
+
 
   <mat-form-field>
     <mat-label>Select a Game Mode</mat-label>
@@ -26,9 +28,8 @@
       <mat-option value="Easy Mode">Easy Mode</mat-option>
       <mat-option value="Hard Mode">Hard Mode</mat-option>
     </mat-select>
+    <mat-icon matSuffix (click)="openInfoDialog($event, 'Select Game Mode', 'Selecting hard difficulty will challenge your ability to recognize more players from smaller teams!')">info</mat-icon>
   </mat-form-field>
 
-  <button mat-raised-button (click)="getAndSelectRandomPlayer()">
-    Start
-  </button>
+  <button mat-raised-button (click)="getAndSelectRandomPlayer()">Start</button>
 </div>

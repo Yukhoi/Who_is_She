@@ -4,11 +4,12 @@ import { Player } from './core/interfaces/player.interface';
 import { StartButtonComponent } from './components/start-button/start-button.component';
 import { GuessingInterfaceComponent } from './components/guessing-interface/guessing-interface.component';
 import { GameService } from './core/services/game.service';
+import { InfoDialogComponent } from './components/info-popup/info-popup.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, StartButtonComponent, GuessingInterfaceComponent],
+  imports: [CommonModule, StartButtonComponent, GuessingInterfaceComponent, InfoDialogComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

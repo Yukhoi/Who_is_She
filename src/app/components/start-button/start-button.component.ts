@@ -6,11 +6,15 @@ import { Player } from '../../core/interfaces/player.interface';
 import { GameMode } from './models';
 import { StartButtonService } from './services/start-button.service';
 import { GameService } from '../../core/services/game.service';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { InfoDialogComponent } from '../info-popup/info-popup.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-start-button',
   standalone: true,
-  imports: [MatSelectModule, MatFormFieldModule, FormsModule],
+  imports: [MatSelectModule, MatFormFieldModule, FormsModule, MatTooltipModule, MatIconModule, InfoDialogComponent],
   templateUrl: './start-button.component.html',
   styleUrl: './start-button.component.css',
 })
@@ -27,7 +31,8 @@ export class StartButtonComponent {
 
   constructor(
     private startButtonService: StartButtonService,
-    private gameService: GameService
+    private gameService: GameService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -50,5 +55,12 @@ export class StartButtonComponent {
 
     this.showButton = false;
     this.showButtonChange.emit(this.showButton);
+  }
+
+  openInfoDialog(event: MouseEvent, title: string, message: string) {
+    event.stopPropagation(); 
+    this.dialog.open(InfoDialogComponent, {
+      data: { title, message },
+    });
   }
 }

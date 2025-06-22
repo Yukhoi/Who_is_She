@@ -7,6 +7,8 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { PlayerDialogComponent } from '../../../player-dialog/player-dialog.component';
 import { Comparison } from './models/comparison.interface';
 import { ResultListService } from './services/result-list.service';
+import { InfoDialogComponent } from '../../../info-popup/info-popup.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-result-list',
@@ -16,6 +18,8 @@ import { ResultListService } from './services/result-list.service';
     MatDialogModule,
     CommonModule,
     PlayerDialogComponent,
+    InfoDialogComponent,
+    MatIconModule
   ],
   templateUrl: './result-list.component.html',
   styleUrl: './result-list.component.css'
@@ -28,7 +32,6 @@ export class ResultListComponent {
   @Output() showButtonChange = new EventEmitter<boolean>();
   @Output() showResultsChange = new EventEmitter<boolean>();
   @Output() tentativeChange = new EventEmitter<number>();
-  // @Output() selectedPlayerChange = new EventEmitter<Player | null>();
   
   tentative: number = 1;
   totalGuesses: number = 8;
@@ -44,6 +47,9 @@ export class ResultListComponent {
     'age',
     'number',
   ];
+  infoMessage: string =
+    'Congratulations! You are one step closer to the correct answer! The green box indicates that the mystery player has the same information (nationality, team, age, number), the up arrow means that the mystery player\'s age or number will be bigger, and the down arrow the other way around. Keep up the good work!';
+
 
   constructor(
     private guessingInterfaceService: GuessingInterfaceService,
@@ -120,6 +126,12 @@ export class ResultListComponent {
 
     dialogRef.afterClosed().subscribe(() => {
       this.resetGame();
+    });
+  }
+
+  openInfoDialog(title: string, message: string) {
+    this.dialog.open(InfoDialogComponent, {
+      data: { title, message },
     });
   }
 
